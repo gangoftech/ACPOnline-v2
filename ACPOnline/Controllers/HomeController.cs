@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACPOnline.Business;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,8 +9,16 @@ namespace ACPOnline.Controllers
 {
     public class HomeController : BaseController
     {
+        private MainBusiness bus = null;
+
+        public HomeController()
+        {
+            bus = new MainBusiness();
+        }
+
         public ActionResult Index()
         {
+            bus.GetAcpInfo(1);
             return View();
         }
 

@@ -209,6 +209,20 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ACPOnline.Business\ACPOnline.Business.csproj">
+      <Project>{00d9fa24-17ca-4991-980a-e02ea6ef6d22}</Project>
+      <Name>ACPOnline.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACPOnline.Models\ACPOnline.Models.csproj">
+      <Project>{87b23aec-c58c-4c6c-8de1-c1968cb9fcc4}</Project>
+      <Name>ACPOnline.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACPOnline.Utility\ACPOnline.Utility.csproj">
+      <Project>{24c82c5e-bb7c-4579-9d24-b0ba8426ebf0}</Project>
+      <Name>ACPOnline.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
