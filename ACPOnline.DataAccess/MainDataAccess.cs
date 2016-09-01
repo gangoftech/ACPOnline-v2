@@ -11,14 +11,14 @@ namespace ACPOnline.DataAccess
 {
     public class MainDataAccess : BaseDataAccess
     {
-        public Info GetAcpInfo(int acpID)
+        public Acp GetAcpInfo(int acpID)
         {
             SqlCommand cmd = new SqlCommand("");
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@ACP_ID", acpID);
             using (SqlDataReader reader = AcpDbContext.ExecuteReader(cmd))
             {
-                var acp = new Info();
+                var acp = new Acp();
                 while (reader.Read())
                 {
                     acp.ID = reader.GetInt32(0);

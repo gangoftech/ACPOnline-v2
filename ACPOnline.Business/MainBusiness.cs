@@ -17,7 +17,7 @@ namespace ACPOnline.Business
             da = new MainDataAccess();
         }
 
-        public Info GetAcpInfo(int acpID)
+        public Acp GetAcpInfo(int acpID)
         {
             return da.GetAcpInfo(acpID);
         }

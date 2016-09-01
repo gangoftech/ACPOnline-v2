@@ -18,7 +18,7 @@ namespace ACPOnline.Controllers
 
         public ActionResult Index()
         {
-            bus.GetAcpInfo(1);
+            //bus.GetAcpInfo(1);
             return View();
         }
 

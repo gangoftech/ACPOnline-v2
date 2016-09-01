@@ -1,0 +1,207 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+@model ACPOnline.Models.AcpViewModel
+<div class="row">
+    <!-- right column -->
+    <div class="col-md-6">
+        <!-- /.box -->
+        <!-- general form elements disabled -->
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">General Elements</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <form role="form">
+                    <!-- text input -->
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.ID)
+                        @Html.TextBoxFor(m => m.Acp.ID, new { @class = "form-control" , placeholder = Html.DisplayNameFor(m => m.Acp.ID) })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.TypeID)
+                        @Html.DropDownListFor(m => m.Acp.TypeID, new SelectList(Model.AcpTypeOptions, "TypeID", "Type"),  new { @class = "form-control" })
+                    </div>
+                    <!-- textarea -->
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.CategoryId)
+                        @Html.DropDownListFor(m => m.Acp.CategoryId, new SelectList(Model.AcpCategoryOptions , "CategoryId", "CategoryName"), new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.Name)
+                        @Html.TextBoxFor(m => m.Acp.Name, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.Name) })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.Description)
+                        @Html.TextAreaFor(m => m.Acp.Description, new { @class = "form-control", rows = "3", placeholder = Html.DisplayNameFor(m => m.Acp.Description) })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.StatusId)
+                        @Html.DropDownListFor(m => m.Acp.StatusId, new SelectList(Model.AcpStatusOptions, "StatusId", "StatusName"), new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.ImplStartDate)
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            @Html.TextBoxFor(m => m.Acp.ImplStartDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.ImplStartDate) })
+                        </div>
+                      </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.ImplEndDate)
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            @Html.TextBoxFor(m => m.Acp.ImplEndDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.ImplEndDate) })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.PlImplEndDate)
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            @Html.TextBoxFor(m => m.Acp.PlImplEndDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.PlImplEndDate) })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.LaunchDate)
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            @Html.TextBoxFor(m => m.Acp.LaunchDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.LaunchDate) })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.PlLaunchEndDate)
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            @Html.TextBoxFor(m => m.Acp.PlLaunchEndDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.PlLaunchEndDate) })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.ProposedBy)
+                        @Html.DropDownListFor(m => m.Acp.ProposedBy, new SelectList(Model.ProposedByOptions, "UserId", "UserName"), new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.Lead)
+                        @Html.DropDownListFor(m => m.Acp.Lead, new SelectList(Model.AcpLeadOptions, "UserId", "UserName"), new { @class = "form-control" })
+                    </div>
+
+
+
+                    <!-- input states -->
+                    <div class="form-group has-success">
+                        <label class="control-label" for="inputSuccess"><i class="fa fa-check"></i> Input with success</label>
+                        <input type="text" class="form-control" id="inputSuccess" placeholder="Enter ...">
+                    </div>
+                    <div class="form-group has-warning">
+                        <label class="control-label" for="inputWarning">
+                            <i class="fa fa-bell-o"></i> Input with
+                            warning
+                        </label>
+                        <input type="text" class="form-control" id="inputWarning" placeholder="Enter ...">
+                    </div>
+                    <div class="form-group has-error">
+                        <label class="control-label" for="inputError">
+                            <i class="fa fa-times-circle-o"></i> Input with
+                            error
+                        </label>
+                        <input type="text" class="form-control" id="inputError" placeholder="Enter ...">
+                    </div>
+                    <!-- checkbox -->
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox">
+                                Checkbox 1
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox">
+                                Checkbox 2
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" disabled>
+                                Checkbox disabled
+                            </label>
+                        </div>
+                    </div>
+                    <!-- radio -->
+                    <div class="form-group">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                Option one is this and that&mdash;be sure to include why it's great
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                Option two can be something else and selecting it will deselect option one
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
+                                Option three is disabled
+                            </label>
+                        </div>
+                    </div>
+                    <!-- select -->
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Acp.TypeID)
+                        @Html.DropDownListFor(m => m.Acp.TypeID, new SelectList(Model.AcpTypeOptions, "TypeID", "Type")))
+                    </div>
+                    <div class="form-group">
+                        <label>Select Disabled</label>
+                        <select class="form-control" disabled>
+                            <option>option 1</option>
+                            <option>option 2</option>
+                            <option>option 3</option>
+                            <option>option 4</option>
+                            <option>option 5</option>
+                        </select>
+                    </div>
+                    <!-- Select multiple-->
+                    <div class="form-group">
+                        <label>Select Multiple</label>
+                        <select multiple class="form-control">
+                            <option>option 1</option>
+                            <option>option 2</option>
+                            <option>option 3</option>
+                            <option>option 4</option>
+                            <option>option 5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Multiple Disabled</label>
+                        <select multiple class="form-control" disabled>
+                            <option>option 1</option>
+                            <option>option 2</option>
+                            <option>option 3</option>
+                            <option>option 4</option>
+                            <option>option 5</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+    <!--/.col (right) -->
+</div>
+<!-- /.row -->
+
