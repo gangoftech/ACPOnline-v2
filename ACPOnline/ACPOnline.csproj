@@ -197,6 +197,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\Acp\Create.cshtml" />
+    <Content Include="Views\Acp\Search.cshtml" />
+    <Content Include="Views\Acp\_SearchResult.cshtml" />
+    <Content Include="Views\Acp\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

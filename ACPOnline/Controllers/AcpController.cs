@@ -24,6 +24,24 @@ namespace ACPOnline.Controllers
             return View(acp);
         }
 
+        // GET: Acp
+        public ActionResult Edit()
+        {
+            var acp = new AcpViewModel();
+            acp.Acp = new Acp();
+            ViewBag.AcpTypes = GetOptions();
+            return View(acp);
+        }
+
+        // GET: Acp
+        public ActionResult Search()
+        {
+            var acp = new AcpViewModel();
+            acp.Acp = new Acp();
+            ViewBag.AcpTypes = GetOptions();
+            return View(acp);
+        }
+
         private List<KeyValue> GetOptions()
         {
             var options = new List<KeyValue>();

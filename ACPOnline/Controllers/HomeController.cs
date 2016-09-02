@@ -9,11 +9,11 @@ namespace ACPOnline.Controllers
 {
     public class HomeController : BaseController
     {
-        private MainBusiness bus = null;
+        private AcpBusiness bus = null;
 
         public HomeController()
         {
-            bus = new MainBusiness();
+            bus = new AcpBusiness();
         }
 
         public ActionResult Index()

@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace ACPOnline.Business
 {
-    public class MainBusiness
+    public class AcpBusiness
     {
-        private MainDataAccess da = null;
+        private AcpDataAccess da = null;
 
-        public  MainBusiness()
+        public  AcpBusiness()
         {
-            da = new MainDataAccess();
+            da = new AcpDataAccess();
         }
 
         public Acp GetAcpInfo(int acpID)

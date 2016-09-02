@@ -1,0 +1,16 @@
+﻿@model IEnumerable<ACPOnline.Models.Acp>
+
+@foreach (var item in Model)
+{
+<tr>
+    <td>@item.ID</td>
+    <td>@item.Name</td>
+    <td>@item.Description</td>
+    <td>@item.Type</td>
+    <td>@item.CategoryName</td>
+    <td>@item.StatusName</td>
+    <td>@item.PlImplStartDate</td>
+    <td>@item.PlImplEndDate</td>
+    <td><span class="fa fa-edit"></span></td>
+</tr>
+}

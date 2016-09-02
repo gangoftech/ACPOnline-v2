@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ACPOnline.DataAccess
 {
-    public class MainDataAccess : BaseDataAccess
+    public class AcpDataAccess : BaseDataAccess
     {
         public Acp GetAcpInfo(int acpID)
         {
