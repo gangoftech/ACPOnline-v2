@@ -30,8 +30,14 @@ namespace ACPOnline.Models
         [Display(Name = "Proposed By")]
         public int? ProposedBy { get; set; }
 
+        [Display(Name = "Proposed By")]
+        public string ProposedByName { get; set; }
+
         [Display(Name = "Lead")]
         public int? Lead { get; set; }
+
+        [Display(Name = "Lead")]
+        public string LeadName { get; set; }
 
         [Display(Name = "Acp Description")]
         public string Description { get; set; }
@@ -54,7 +60,7 @@ namespace ACPOnline.Models
         public DateTime? LaunchDate { get; set; }
 
         [Display(Name = "Pl. Launch Date")]
-        public DateTime? PlLaunchEndDate { get; set; }
+        public DateTime? PlLaunchDate { get; set; }
 
         [Display(Name = "Status")]
         public int? StatusId { get; set; }
@@ -64,12 +70,22 @@ namespace ACPOnline.Models
 
         public bool? IsDeleted { get; set; }
 
+        [Display(Name = "Created Date")]
         public DateTime? CreatedDate { get; set; }
 
+        [Display(Name = "Created By")]
         public int? CreatedBy { get; set; }
 
+        [Display(Name = "Created By")]
+        public string CreatedByName { get; set; }
+
+        [Display(Name = "Updated Date")]
         public DateTime? UpdatedDate { get; set; }
 
+        [Display(Name = "Updated By")]
         public int? UpdatedBy { get; set; }
+
+        [Display(Name = "Updated By")]
+        public string UpdatedByName { get; set; }
     }
 }

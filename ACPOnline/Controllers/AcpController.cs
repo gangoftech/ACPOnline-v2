@@ -1,4 +1,5 @@
-﻿using ACPOnline.Models;
+﻿using ACPOnline.Business;
+using ACPOnline.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +10,33 @@ namespace ACPOnline.Controllers
 {
     public class AcpController : Controller
     {
+        private AcpBusiness bus = null;
+
+        public AcpController()
+        {
+            bus = new AcpBusiness();
+        }
+
         // GET: Acp
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: Acp
+        [HttpGet]
         public ActionResult Create()
         {
             var acp = new AcpViewModel();
             acp.Acp = new Acp();
             ViewBag.AcpTypes = GetOptions();
             return View(acp);
+        }
+
+        [HttpPost]
+        public ActionResult Create(AcpViewModel model)
+        {
+            bus.UpdateAcpInfo(model);
+            return View(model);
         }
 
         // GET: Acp
@@ -33,13 +48,20 @@ namespace ACPOnline.Controllers
             return View(acp);
         }
 
-        // GET: Acp
+        [HttpGet]
         public ActionResult Search()
         {
-            var acp = new AcpViewModel();
-            acp.Acp = new Acp();
-            ViewBag.AcpTypes = GetOptions();
-            return View(acp);
+            var vm = new AcpViewModel();
+            vm.Acp = new Acp();
+            vm.AcpList = bus.GetAllAcpInfo();
+            return View(vm);
+        }
+
+        [HttpPost]
+        public ActionResult Search(Acp acp)
+        {
+            var acpList = bus.GetAllAcpInfo();
+            return View(acpList);
         }
 
         private List<KeyValue> GetOptions()

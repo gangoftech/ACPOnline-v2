@@ -21,19 +21,57 @@ namespace ACPOnline.DataAccess
 
         public SqlDataReader ExecuteReader(SqlCommand cmd)
         {
+            SqlConnection connection = new SqlConnection(this.connectionString);
+
+            try
+            {
+                connection.Open();
+                cmd.Connection = connection;
+                return cmd.ExecuteReader();
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                //connection.Close();
+            }
+        }
+
+        public List<T> ExecuteReaderAndFillList<T>(SqlCommand cmd, Func<SqlDataReader, T> funct)
+        {
+            List<T> list = new List<T>();
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                cmd.Connection = connection;
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    var obj = funct(reader);
+                    list.Add(obj);
+                }
+                return list;
+            }
+        }
+
+        public int ExecuteNonQuery(SqlCommand cmd)
+        {
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
                 try
                 {
                     connection.Open();
                     cmd.Connection = connection;
-                    return cmd.ExecuteReader();
+                    return cmd.ExecuteNonQuery();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return null;
+                    throw ex;
                 }
-                finally {
+                finally
+                {
                     connection.Close();
                 }
             }

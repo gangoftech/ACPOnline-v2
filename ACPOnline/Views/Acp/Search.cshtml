@@ -76,11 +76,11 @@
                         <th>@Html.DisplayNameFor(m => m.Acp.CategoryName)</th>
                         <th>@Html.DisplayNameFor(m => m.Acp.StatusName)</th>
                         <th>@Html.DisplayNameFor(m => m.Acp.PlImplStartDate)</th>
-                        <th>@Html.DisplayNameFor(m => m.Acp.PlLaunchEndDate)</th>
+                        <th>@Html.DisplayNameFor(m => m.Acp.PlLaunchDate)</th>
                         <th>View / Edit</th>
                     </tr>
                     <tr>
-                       
+                       @{ Html.RenderPartial("_SearchResults", Model.AcpList); }
                     </tr>
                 </table>
             </div>

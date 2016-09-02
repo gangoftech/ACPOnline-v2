@@ -12,6 +12,8 @@ namespace ACPOnline.Models
 
         public string CategoryName { get; set; }
 
+        public int TypeID { get; set; }
+
         public DateTime? CreatedDate { get; set; }
 
         public int? CreatedBy { get; set; }
