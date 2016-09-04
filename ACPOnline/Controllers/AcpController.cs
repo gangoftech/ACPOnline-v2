@@ -40,12 +40,11 @@ namespace ACPOnline.Controllers
         }
 
         // GET: Acp
-        public ActionResult Edit()
+        public ActionResult Edit(int id)
         {
-            var acp = new AcpViewModel();
-            acp.Acp = new Acp();
-            ViewBag.AcpTypes = GetOptions();
-            return View(acp);
+            var vm = new AcpViewModel();
+            vm.Acp = bus.GetAcpInfo(id);
+            return View(vm);
         }
 
         [HttpGet]
@@ -60,8 +59,8 @@ namespace ACPOnline.Controllers
         [HttpPost]
         public ActionResult Search(Acp acp)
         {
-            var acpList = bus.GetAllAcpInfo();
-            return View(acpList);
+            var vm = bus.GetAllAcpInfo(acp);
+            return View(vm);
         }
 
         private List<KeyValue> GetOptions()

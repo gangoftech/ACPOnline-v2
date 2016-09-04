@@ -14,28 +14,46 @@ GO
 CREATE TABLE dbo.ACP_TYPE_INFO
 (
 ACP_Type_Id			INT NOT NULL PRIMARY KEY,
-ACP_Type			INT,
-Is_Deleted			BIT DEFAULT 1,
+ACP_Type			varchar(50),
+Is_Deleted			BIT DEFAULT 0,
 Created_Date		DATETIME,
 Created_By			INT,
 Updated_Date		DATETIME,
 Updated_By			INT
 )
-
 GO
+
+Insert into dbo.ACP_TYPE_INFO(ACP_Type_Id, ACP_Type, Created_Date, Created_By) values (1, 'RFP', GETDATE(), 359951)
+Insert into dbo.ACP_TYPE_INFO(ACP_Type_Id, ACP_Type, Created_Date, Created_By) values (2, 'Portfolio Based Arch Group (PBAG)', GETDATE(), 359951)
+Insert into dbo.ACP_TYPE_INFO(ACP_Type_Id, ACP_Type, Created_Date, Created_By) values (3, 'Enterprise Architecture', GETDATE(), 359951)
+Insert into dbo.ACP_TYPE_INFO(ACP_Type_Id, ACP_Type, Created_Date, Created_By) values (4, 'Governance', GETDATE(), 359951)
 
 
 DROP TABLE dbo.ACP_CATEGORY_INFO
 GO
+
 CREATE TABLE dbo.ACP_CATEGORY_INFO
 (
 ACP_Category_Id		INT NOT NULL PRIMARY KEY,
-ACP_Category		VARCHAR(30),
+ACP_Type_Id			INT NOT NULL,
+ACP_Category		VARCHAR(50),
 Created_Date		DATETIME,
 Created_By			INT,
 Updated_Date		DATETIME,
 Updated_By			INT
 )
+
+Insert into dbo.ACP_CATEGORY_INFO(ACP_Category_Id, ACP_Type_Id, ACP_Category, Created_Date, Created_By) values (1, 1, 'Solutioning', GETDATE(), 359951)
+Insert into dbo.ACP_CATEGORY_INFO(ACP_Category_Id, ACP_Type_Id, ACP_Category, Created_Date, Created_By) values (2, 1, 'Solution Review', GETDATE(), 359951)
+Insert into dbo.ACP_CATEGORY_INFO(ACP_Category_Id, ACP_Type_Id, ACP_Category, Created_Date, Created_By) values (3, 2, 'Mentoring and Trainings', GETDATE(), 359951)
+Insert into dbo.ACP_CATEGORY_INFO(ACP_Category_Id, ACP_Type_Id, ACP_Category, Created_Date, Created_By) values (4, 2, 'Application Architecture and design', GETDATE(), 359951)
+Insert into dbo.ACP_CATEGORY_INFO(ACP_Category_Id, ACP_Type_Id, ACP_Category, Created_Date, Created_By) values (5, 3, 'Repositories', GETDATE(), 359951)
+Insert into dbo.ACP_CATEGORY_INFO(ACP_Category_Id, ACP_Type_Id, ACP_Category, Created_Date, Created_By) values (6, 3, 'NextGen and POCs', GETDATE(), 359951)
+Insert into dbo.ACP_CATEGORY_INFO(ACP_Category_Id, ACP_Type_Id, ACP_Category, Created_Date, Created_By) values (7, 4, 'Planning and maintenance', GETDATE(), 359951)
+Insert into dbo.ACP_CATEGORY_INFO(ACP_Category_Id, ACP_Type_Id, ACP_Category, Created_Date, Created_By) values (8, 4, 'Evangelization and adoption', GETDATE(), 359951)
+Insert into dbo.ACP_CATEGORY_INFO(ACP_Category_Id, ACP_Type_Id, ACP_Category, Created_Date, Created_By) values (9, 4, 'Team Building and sustenance', GETDATE(), 359951)
+Insert into dbo.ACP_CATEGORY_INFO(ACP_Category_Id, ACP_Type_Id, ACP_Category, Created_Date, Created_By) values (10, 4, 'Status tracking and Reporting', GETDATE(), 359951)
+
 
 
 DROP TABLE dbo.ACP_STATUS
@@ -47,6 +65,10 @@ CREATE TABLE dbo.ACP_STATUS
 ACP_Status_Id	INT NOT NULL PRIMARY KEY,
 ACP_Status		VARCHAR(30) 
 )
+GO
+
+Insert into dbo.ACP_STATUS (ACP_Status_Id, ACP_Status) VALUES (1, 'Active')
+Insert into dbo.ACP_STATUS (ACP_Status_Id, ACP_Status) VALUES (2, 'Closed') 
 
 DROP TABLE dbo.Acp_Roles
 GO
@@ -185,9 +207,9 @@ AI.ACP_Category_Id,
 ACI.ACP_Category,
 AI.ACP_Name,
 AI.Proposed_By,
-Proposed_By_Name = AU1.[User_Name],
+Proposed_By_Name = ISNULL(AU1.[User_Name], ''),
 AI.ACP_Lead,
-ACP_Lead_Name = AU4.[User_Name],
+ACP_Lead_Name = ISNULL(AU4.[User_Name], ''),
 AI.Description,
 AI.Lead_Assn_Date,
 AI.Impl_Start_Date,
@@ -199,16 +221,16 @@ AI.Pl_Launch_Date,
 AI.ACP_Status_Id,
 S.ACP_Status,
 AI.Created_Date,
-AI.Created_By,
-Created_By_Name = AU2.[User_Name],
+Created_By = ISNULL(AI.Created_By , -1),
+Created_By_Name = ISNULL(AU2.[User_Name], ''),
 AI.Updated_Date,
-AI.Updated_By,
-Updated_By_Name = AU3.[User_Name],
+Updated_By = ISNULL(AI.Updated_By, -1),
+Updated_By_Name = ISNULL(AU3.[User_Name], ''),
 AI.Is_Deleted
 from dbo.Acp_Info AI 
-LEFT JOIN dbo.ACP_Status S ON AI.ACP_Status_Id = S.ACP_Status_Id
-LEFT JOIN Acp_Type_Info ATI ON AI.ACP_Type_ID = ATI.ACP_Type_Id
-LEFT JOIN Acp_Category_Info ACI ON AI.ACP_Category_Id = ACI.ACP_Category_Id
+JOIN dbo.ACP_Status S ON AI.ACP_Status_Id = S.ACP_Status_Id
+JOIN Acp_Type_Info ATI ON AI.ACP_Type_ID = ATI.ACP_Type_Id
+JOIN Acp_Category_Info ACI ON AI.ACP_Category_Id = ACI.ACP_Category_Id
 LEFT JOIN Acp_Users AU1 ON AI.Proposed_By = AU1.[User_Id]
 LEFT JOIN Acp_Users AU2 ON AI.Created_By = AU2.[User_Id]
 LEFT JOIN Acp_Users AU3 ON AI.Updated_By = AU3.[User_Id]
@@ -247,7 +269,7 @@ GO
 
 CREATE PROC [dbo].[spd_Get_Acp_Info_Update]
 (
-@ACP_ID int,
+@ACP_ID int = -1,
 @ACP_Type_ID int,
 @ACP_Category_Id int,
 @ACP_Name varchar(30),
@@ -268,7 +290,7 @@ CREATE PROC [dbo].[spd_Get_Acp_Info_Update]
 AS 
 BEGIN
 
-if(@ACP_ID = 0)
+if(@ACP_ID = -1)
 begin
 
 insert into dbo.ACP_INFO(ACP_Type_ID, ACP_Category_Id, ACP_Name, Proposed_By, ACP_Lead,
@@ -287,6 +309,7 @@ ACP_Type_ID = @ACP_Type_ID, ACP_Category_Id = @ACP_Category_Id, ACP_Name = @ACP_
 Description = @Description, Lead_Assn_Date = @Lead_Assn_Date, Impl_Start_Date = @Impl_Start_Date, Impl_End_Date = @Impl_End_Date, 
 @Pl_Impl_End_Date = Pl_Impl_End_Date, @Launch_Date = Launch_Date, Pl_Launch_Date = @Pl_Launch_Date,
 ACP_Status_Id = @ACP_Status_Id, Updated_By = @Updated_By, Updated_Date = GETDATE()
+where ACP_ID = @ACP_ID
 
 end
 

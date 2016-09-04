@@ -44,6 +44,7 @@
     <Compile Include="BaseDataAccess.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="AcpDataAccess.cs" />
+    <Compile Include="Helpers\ReaderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

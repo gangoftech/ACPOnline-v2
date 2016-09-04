@@ -20,7 +20,7 @@
                             <!-- text input -->
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Acp.ID)
-                                @Html.TextBoxFor(m => m.Acp.ID, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.ID) })
+                                @Html.TextBoxFor(m => m.Acp.ID, new { @class = "form-control", disabled = true, placeholder = Html.DisplayNameFor(m => m.Acp.ID) })
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Acp.TypeID)
@@ -52,7 +52,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    @Html.TextBoxFor(m => m.Acp.ImplStartDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.ImplStartDate) })
+                                    @Html.TextBoxFor(m => m.Acp.ImplStartDate, new { @class = "form-control datepicker", placeholder = Html.DisplayNameFor(m => m.Acp.ImplStartDate) })
                                 </div>
                             </div>
                             <div class="form-group">
@@ -61,7 +61,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    @Html.TextBoxFor(m => m.Acp.ImplEndDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.ImplEndDate) })
+                                    @Html.TextBoxFor(m => m.Acp.ImplEndDate, new { @class = "form-control datepicker", placeholder = Html.DisplayNameFor(m => m.Acp.ImplEndDate) })
                                 </div>
                             </div>
                             <div class="form-group">
@@ -70,7 +70,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    @Html.TextBoxFor(m => m.Acp.PlImplEndDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.PlImplEndDate) })
+                                    @Html.TextBoxFor(m => m.Acp.PlImplEndDate, new { @class = "form-control datepicker", placeholder = Html.DisplayNameFor(m => m.Acp.PlImplEndDate) })
                                 </div>
                             </div>
                             <div class="form-group">
@@ -79,7 +79,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    @Html.TextBoxFor(m => m.Acp.LaunchDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.LaunchDate) })
+                                    @Html.TextBoxFor(m => m.Acp.LaunchDate, new { @class = "form-control datepicker", placeholder = Html.DisplayNameFor(m => m.Acp.LaunchDate) })
                                 </div>
                             </div>
                             <div class="form-group">
@@ -88,7 +88,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    @Html.TextBoxFor(m => m.Acp.PlLaunchDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.PlLaunchDate) })
+                                    @Html.TextBoxFor(m => m.Acp.PlLaunchDate, new { @class = "form-control datepicker", placeholder = Html.DisplayNameFor(m => m.Acp.PlLaunchDate) })
                                 </div>
                             </div>
                         </div>
@@ -105,11 +105,11 @@
 
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Acp.ProposedBy)
-                                @Html.DropDownListFor(m => m.Acp.ProposedBy, new SelectList(Model.ProposedByOptions, "UserId", "UserName"), new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.Acp.ProposedBy, new SelectList(Model.ProposedByOptions, "UserId", "UserName"), new { @class = "form-control select2" })
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Acp.Lead)
-                                @Html.DropDownListFor(m => m.Acp.Lead, new SelectList(Model.AcpLeadOptions, "UserId", "UserName"), new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.Acp.Lead, new SelectList(Model.AcpLeadOptions, "UserId", "UserName"), new { @class = "form-control select2" })
                             </div>
                         </div>
                     </div>
@@ -125,3 +125,14 @@
     </div>
 </div>
 <!-- /.row -->
+
+
+@section scripts
+{
+<script>
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+            $(".select2").select2();
+        });
+</script>
+}

@@ -9,18 +9,18 @@
         <!-- /.box -->
         <!-- general form elements disabled -->
         <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">Create ACP</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <form role="form">
+            <form role="form" action="@Url.Action("Create", "Acp")" method="post">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Edit ACP</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
                     <div class="row">
                         <div class="col-md-6">
                             <!-- text input -->
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Acp.ID)
-                                @Html.TextBoxFor(m => m.Acp.ID, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.ID) })
+                                @Html.TextBoxFor(m => m.Acp.ID, new { @class = "form-control", disabled=true, placeholder = Html.DisplayNameFor(m => m.Acp.ID) })
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Acp.TypeID)
@@ -52,7 +52,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    @Html.TextBoxFor(m => m.Acp.ImplStartDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.ImplStartDate) })
+                                    @Html.TextBoxFor(m => m.Acp.ImplStartDate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker", placeholder = Html.DisplayNameFor(m => m.Acp.ImplStartDate) })
                                 </div>
                             </div>
                             <div class="form-group">
@@ -61,7 +61,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    @Html.TextBoxFor(m => m.Acp.ImplEndDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.ImplEndDate) })
+                                    @Html.TextBoxFor(m => m.Acp.ImplEndDate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker", placeholder = Html.DisplayNameFor(m => m.Acp.ImplEndDate) })
                                 </div>
                             </div>
                             <div class="form-group">
@@ -70,7 +70,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    @Html.TextBoxFor(m => m.Acp.PlImplEndDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.PlImplEndDate) })
+                                    @Html.TextBoxFor(m => m.Acp.PlImplEndDate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker", placeholder = Html.DisplayNameFor(m => m.Acp.PlImplEndDate) })
                                 </div>
                             </div>
                             <div class="form-group">
@@ -79,16 +79,16 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    @Html.TextBoxFor(m => m.Acp.LaunchDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.LaunchDate) })
+                                    @Html.TextBoxFor(m => m.Acp.LaunchDate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker", placeholder = Html.DisplayNameFor(m => m.Acp.LaunchDate) })
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(m => m.Acp.PlLaunchEndDate)
+                                @Html.LabelFor(m => m.Acp.PlLaunchDate)
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    @Html.TextBoxFor(m => m.Acp.PlLaunchEndDate, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.PlLaunchEndDate) })
+                                    @Html.TextBoxFor(m => m.Acp.PlLaunchDate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker", placeholder = Html.DisplayNameFor(m => m.Acp.PlLaunchDate) })
                                 </div>
                             </div>
                         </div>
@@ -105,23 +105,34 @@
 
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Acp.ProposedBy)
-                                @Html.DropDownListFor(m => m.Acp.ProposedBy, new SelectList(Model.ProposedByOptions, "UserId", "UserName"), new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.Acp.ProposedBy, new SelectList(Model.ProposedByOptions, "UserId", "UserName"), new { @class = "form-control select2" })
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Acp.Lead)
-                                @Html.DropDownListFor(m => m.Acp.Lead, new SelectList(Model.AcpLeadOptions, "UserId", "UserName"), new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.Acp.Lead, new SelectList(Model.AcpLeadOptions, "UserId", "UserName"), new { @class = "form-control select2" })
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-                <button type="submit" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-info pull-right">Submit</button>
-            </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-default">Cancel</button>
+                    <button type="submit" class="btn btn-info pull-right">Submit</button>
+                </div>
+            </form>
         </div>
         <!-- /.box -->
     </div>
 </div>
 <!-- /.row -->
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+            $(".select2").select2();
+        });
+    </script>
+}

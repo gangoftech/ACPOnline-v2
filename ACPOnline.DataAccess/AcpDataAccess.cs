@@ -1,4 +1,5 @@
-﻿using ACPOnline.Models;
+﻿using ACPOnline.DataAccess.Helpers;
+using ACPOnline.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -70,7 +71,7 @@ namespace ACPOnline.DataAccess
 
                 var acp = new Acp();
 
-                acp.ID = reader.GetInt32(0);
+                acp.ID = reader.GetNullableInt32(0);
                 acp.TypeID = reader.GetInt32(1);
                 acp.Type = reader.GetString(2);
                 acp.CategoryId = reader.GetInt32(3);
@@ -81,19 +82,19 @@ namespace ACPOnline.DataAccess
                 acp.Lead = reader.GetInt32(8);
                 acp.LeadName = reader.GetString(9);
                 acp.Description = reader.GetString(10);
-                acp.LeadAssnDate = reader.GetDateTime(11);
-                acp.ImplStartDate = reader.GetDateTime(12);
-                acp.ImplEndDate = reader.GetDateTime(13);
-                acp.PlImplStartDate = reader.GetDateTime(14);
-                acp.PlImplEndDate = reader.GetDateTime(15);
-                acp.LaunchDate = reader.GetDateTime(16);
-                acp.PlLaunchDate = reader.GetDateTime(17);
+                acp.LeadAssnDate = reader.GetNullableDateTime(11);
+                acp.ImplStartDate = reader.GetNullableDateTime(12);
+                acp.ImplEndDate = reader.GetNullableDateTime(13);
+                acp.PlImplStartDate = reader.GetNullableDateTime(14);
+                acp.PlImplEndDate = reader.GetNullableDateTime(15);
+                acp.LaunchDate = reader.GetNullableDateTime(16);
+                acp.PlLaunchDate = reader.GetNullableDateTime(17);
                 acp.StatusId = reader.GetInt32(18);
                 acp.StatusName = reader.GetString(19);
-                acp.CreatedDate = reader.GetDateTime(20);
+                acp.CreatedDate = reader.GetNullableDateTime(20);
                 acp.CreatedBy = reader.GetInt32(21);
                 acp.CreatedByName = reader.GetString(22);
-                acp.UpdatedDate = reader.GetDateTime(23);
+                acp.UpdatedDate = reader.GetNullableDateTime(23);
                 acp.UpdatedBy = reader.GetInt32(24);
                 acp.UpdatedByName = reader.GetString(25);
 
