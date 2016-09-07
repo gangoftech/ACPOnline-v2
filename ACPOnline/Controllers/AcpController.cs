@@ -35,6 +35,10 @@ namespace ACPOnline.Controllers
         [HttpPost]
         public ActionResult Create(AcpViewModel model)
         {
+            if(!ModelState.IsValid)
+            {
+                return View(model);
+            }
             bus.UpdateAcpInfo(model);
             return View(model);
         }

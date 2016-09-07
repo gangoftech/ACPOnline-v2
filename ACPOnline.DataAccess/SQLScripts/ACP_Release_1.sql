@@ -83,14 +83,14 @@ ROLE_NAME		VARCHAR(50)
 DROP TABLE dbo.Acp_Users
 GO
 
-GO
 CREATE TABLE dbo.Acp_Users
 (
-User_Id			INT NOT NULL PRIMARY KEY,
-User_Name		VARCHAR(50),
+[User_Id]		INT IDENTITY(1, 1),
+Login_Id		VARCHAR(50) NOT NULL,
+[User_Name]		VARCHAR(50),
 User_Email		VARCHAR(100),
 User_Password	VARCHAR(50),
-Is_Deleted		BIT DEFAULT 1,
+Is_Deleted		BIT DEFAULT 0,
 Created_Date	DATETIME,
 Created_By		INT,
 Updated_Date	DATETIME,
@@ -106,7 +106,7 @@ CREATE TABLE dbo.User_Access
 Access_Id		INT NOT NULL PRIMARY KEY,
 User_Id			INT,
 Role_Id			INT,
-Is_Deleted		BIT DEFAULT 1,
+Is_Deleted		BIT DEFAULT 0,
 Created_Date	DATETIME,
 Created_By		INT,
 Updated_Date	DATETIME,
@@ -122,7 +122,7 @@ CREATE TABLE dbo.TEAM_MEMBER_INFO
 Team_Member_info_Id		INT NOT NULL PRIMARY KEY,
 ACP_ID					INT,
 Access_Id				INT /*FOREIGN KEY REFERENCES USER_ACCESS(Access_Id)*/,
-Is_Deleted				BIT DEFAULT 1,
+Is_Deleted				BIT DEFAULT 0,
 Created_Date			DATETIME,
 Created_By				INT,
 Updated_Date			DATETIME,
@@ -314,6 +314,95 @@ where ACP_ID = @ACP_ID
 end
 
 
+END
+GO
+
+DROP VIEW [dbo].[vw_User_Info]
+GO
+
+CREATE VIEW [dbo].[vw_User_Info]
+AS
+select 
+AU.[User_Id],
+AU.[Login_Id],
+AU.[User_Name],
+AU.User_Email,
+AU.User_Password,
+AU.Is_Deleted,
+AU.Created_Date,
+Created_By = ISNULL(AU.Created_By , -1),
+AU.Updated_Date,
+Updated_By = ISNULL(AU.Updated_By , -1)
+ from dbo.Acp_Users AU
+GO
+
+Insert into dbo.Acp_Users(Login_Id, [User_Name], User_Email, User_Password, Created_By) values ('sakthi', 'Sakthi', 'sakthikumar.m2@cognizant.com', 'Password-123', 1)
+GO
+
+DROP PROC [dbo].[spd_Get_User_Info]
+GO
+
+CREATE PROC [dbo].[spd_Get_User_Info]
+(
+ @User_Id INT
+)
+AS 
+BEGIN
+
+select * from [dbo].[vw_User_Info] where [User_Id] = @User_Id
+
+END
+GO
+
+DROP PROC [dbo].[spd_Get_All_User_Info]
+GO
+
+CREATE PROC [dbo].[spd_Get_All_User_Info]
+AS 
+BEGIN
+
+select * from [dbo].[vw_User_Info]
+
+END
+GO
+
+DROP PROC [dbo].[spd_Acp_User_Update]
+GO
+
+CREATE PROC [dbo].[spd_Acp_User_Update]
+(
+@User_Id INT,
+@Login_Id VARCHAR(50),
+@User_Name VARCHAR(50),
+@User_Email VARCHAR(100),
+@User_Password VARCHAR(50),
+@Is_Deleted BIT,
+@Created_By INT,
+@Updated_By INT
+)
+AS 
+BEGIN
+
+if(@User_Id = -1)
+begin
+
+insert into dbo.Acp_Users(Login_Id, [User_Name],User_Email,
+User_Password,Is_Deleted,Created_Date,Created_By) 
+values 
+(@Login_Id, @User_Name, @User_Email, @User_Password, @Is_Deleted,
+GETDATE(), @Created_By)
+
+end
+else
+begin
+
+update dbo.Acp_Users set 
+[User_Name] = @User_Name, User_Email = @User_Email, User_Password = @User_Password, Is_Deleted = @Is_Deleted,
+Updated_By = @Updated_By, Updated_Date = GETDATE(),
+Login_Id = @Login_Id
+where [User_Id] = @User_Id
+
+end
 END
 GO
 

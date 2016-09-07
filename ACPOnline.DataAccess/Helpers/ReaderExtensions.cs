@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACPOnline.DataAccess.Helpers
+namespace ACPOnline.DataAccess
 {
     public static class ReaderExtensions
     {

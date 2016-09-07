@@ -34,10 +34,12 @@
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Acp.Name)
                                 @Html.TextBoxFor(m => m.Acp.Name, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Acp.Name) })
+                                @Html.ValidationMessageFor(m => m.Acp.Name)
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Acp.Description)
                                 @Html.TextAreaFor(m => m.Acp.Description, new { @class = "form-control", rows = "3", placeholder = Html.DisplayNameFor(m => m.Acp.Description) })
+                                @Html.ValidationMessageFor(m => m.Acp.Description)
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Acp.StatusId)

@@ -1,5 +1,4 @@
-﻿using ACPOnline.DataAccess.Helpers;
-using ACPOnline.Models;
+﻿using ACPOnline.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -73,12 +72,12 @@ namespace ACPOnline.DataAccess
 
                 acp.ID = reader.GetNullableInt32(0);
                 acp.TypeID = reader.GetInt32(1);
-                acp.Type = reader.GetString(2);
+                acp.Type = (!reader.IsDBNull(2)? reader.GetString(2):"");
                 acp.CategoryId = reader.GetInt32(3);
-                acp.CategoryName = reader.GetString(4);
-                acp.Name = reader.GetString(5);
+                acp.CategoryName = (!reader.IsDBNull(4) ? reader.GetString(4) : "");
+                acp.Name = (!reader.IsDBNull(5) ? reader.GetString(5) : "");
                 acp.ProposedBy = reader.GetInt32(6);
-                acp.ProposedByName = reader.GetString(7);
+                acp.ProposedByName = (!reader.IsDBNull(7) ? reader.GetString(7) : "");
                 acp.Lead = reader.GetInt32(8);
                 acp.LeadName = reader.GetString(9);
                 acp.Description = reader.GetString(10);

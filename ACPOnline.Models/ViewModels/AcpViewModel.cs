@@ -8,7 +8,7 @@ namespace ACPOnline.Models
 {
     public class AcpViewModel
     {
-        public Acp Acp { get; set;  }
+        public Acp Acp { get; set; }
 
         public IList<Acp> AcpList { get; set; }
 

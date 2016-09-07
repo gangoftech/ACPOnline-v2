@@ -1,0 +1,11 @@
+﻿@model IEnumerable<ACPOnline.Models.User>
+
+@foreach (var item in Model)
+{
+<tr>
+    <td>@item.UserId</td>
+    <td>@item.UserName</td>
+    <td>@item.LoginId</td>
+    <td><a href="@Url.Action("Edit", "User" , new { id = item.UserId })"><span class="fa fa-edit"></span></a></td>
+</tr>
+}

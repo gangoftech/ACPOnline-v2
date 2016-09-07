@@ -13,6 +13,7 @@ namespace ACPOnline.Models
         public int? ID { get; set; }
 
         [Display(Name = "Acp Type")]
+        [Required(ErrorMessage = "ACP Type is required")]
         public int TypeID { get; set; }
 
         [Display(Name = "Type")]
@@ -25,6 +26,8 @@ namespace ACPOnline.Models
         public string CategoryName { get; set; }
 
         [Display(Name = "Acp Name")]
+        [Required(ErrorMessage = "ACP Name is required")]
+        [StringLength(30)]
         public string Name { get; set; }
 
         [Display(Name = "Proposed By")]
@@ -40,6 +43,7 @@ namespace ACPOnline.Models
         public string LeadName { get; set; }
 
         [Display(Name = "Acp Description")]
+        [Required(ErrorMessage = "ACP Description is required")]
         public string Description { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
