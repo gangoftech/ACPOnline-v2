@@ -3,7 +3,7 @@ using ACPOnline.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Web.Security;
 using System.Web.Mvc;
 
 namespace ACPOnline.Controllers
@@ -28,6 +28,7 @@ namespace ACPOnline.Controllers
         {
             var vm = new UserViewModel();
             vm.User = new User();
+            vm.User.Password = Membership.GeneratePassword(8, 1);
             return View(vm);
         }
 
@@ -38,7 +39,7 @@ namespace ACPOnline.Controllers
             {
                 return View(vm);
             }
-            bus.UpdateAcpInfo(vm.User);
+            bus.UpdateUserInfo(vm.User);
             return View(vm);
         }
 

@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace ACPOnline.Controllers
 {
-    public class AcpController : Controller
+    public class AcpController : BaseController
     {
         private AcpBusiness bus = null;
 

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace ACPOnline.Controllers
 {
+    [Authorize]
     public class BaseController : Controller
     {
         public BaseController()

@@ -1,19 +1,50 @@
-﻿using System;
+﻿using ACPOnline.Business;
+using ACPOnline.Models;
+using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace ACPOnline.Controllers
 {
     public class LoginController : Controller
     {
-        // GET: Login
-        public ActionResult Login()
+        private UserBusiness bus = null;
+
+        public LoginController()
         {
-            //GetUserName("359951");
+            bus = new UserBusiness();
+        }
+        // GET: Login
+        [HttpGet]
+        public ActionResult Login(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(UserViewModel vm, string returnUrl)
+        {
+            //if(!ModelState.IsValid)
+            //{
+            //    return View();
+            //}
+
+            var auth = bus.AuthendicateUser(vm.User.LoginId, vm.User.Password);
+
+            if(auth.IsSuccess)
+            {
+                FormsAuthentication.SetAuthCookie(vm.User.LoginId, false);
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         private bool AuthenticateAD(string userName, string password)

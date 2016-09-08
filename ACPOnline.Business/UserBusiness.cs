@@ -27,9 +27,14 @@ namespace ACPOnline.Business
             return da.GetUserInfo(userId);
         }
 
-        public int UpdateAcpInfo(User user)
+        public int UpdateUserInfo(User user)
         {
-            return da.UpdateAcpInfo(user);
+            return da.UpdateUserInfo(user);
+        }
+
+        public AuthResult AuthendicateUser(string loginId, string password)
+        {
+            return da.AuthendicateUser(loginId, password);
         }
     }
 }

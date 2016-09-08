@@ -371,12 +371,12 @@ GO
 
 CREATE PROC [dbo].[spd_Acp_User_Update]
 (
-@User_Id INT,
+@User_Id INT = -1,
 @Login_Id VARCHAR(50),
 @User_Name VARCHAR(50),
 @User_Email VARCHAR(100),
 @User_Password VARCHAR(50),
-@Is_Deleted BIT,
+@Is_Deleted BIT = 0,
 @Created_By INT,
 @Updated_By INT
 )
@@ -403,6 +403,41 @@ Login_Id = @Login_Id
 where [User_Id] = @User_Id
 
 end
+END
+GO
+
+DROP PROC [dbo].[spd_Acp_Auth_User]
+GO
+
+CREATE PROC [dbo].[spd_Acp_Auth_User]
+(
+@Login_Id VARCHAR(50),
+@Password VARCHAR(50)
+)
+AS 
+BEGIN
+
+DECLARE @Is_Success BIT, @Is_Wrong_Password BIT 
+
+IF EXISTS(select 1 from dbo.Acp_Users where Login_Id = @Login_Id and User_Password = @Password and Is_Deleted = 0)
+BEGIN
+
+SET @Is_Success = 1
+SET @Is_Wrong_Password = 0
+SELECT Is_Success = @Is_Success, Is_Wrong_Password = @Is_Wrong_Password 
+RETURN
+
+END
+
+IF EXISTS(select 1 from dbo.Acp_Users where Login_Id = @Login_Id and Is_Deleted = 0)
+BEGIN
+
+SET @Is_Success = 0
+SET @Is_Wrong_Password = 1
+SELECT Is_Success = @Is_Success, Is_Wrong_Password = @Is_Wrong_Password 
+       RETURN
+END
+
 END
 GO
 

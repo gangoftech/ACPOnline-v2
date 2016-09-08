@@ -41,7 +41,7 @@ namespace ACPOnline.DataAccess
             }
         }
 
-        public int UpdateAcpInfo(User user)
+        public int UpdateUserInfo(User user)
         {
             SqlCommand cmd = new SqlCommand("spd_Acp_User_Update");
             cmd.CommandType = CommandType.StoredProcedure;
@@ -54,6 +54,24 @@ namespace ACPOnline.DataAccess
             cmd.Parameters.AddWithValue("@Created_By", user.CreatedBy);
             cmd.Parameters.AddWithValue("@Updated_By", user.UpdatedBy);
             return AcpDbContext.ExecuteNonQuery(cmd);
+        }
+
+        public AuthResult AuthendicateUser(string loginId, string password)
+        {
+            SqlCommand cmd = new SqlCommand("spd_Acp_Auth_User");
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Login_Id", loginId);
+            cmd.Parameters.AddWithValue("@Password", password);
+            using (SqlDataReader reader = AcpDbContext.ExecuteReader(cmd))
+            {
+                var auth = new AuthResult();
+                while (reader.Read())
+                {
+                    auth = FillAuthResult(reader);
+                }
+                return auth;
+            }
+
         }
 
         private User FillUserInfo(SqlDataReader reader)
@@ -70,6 +88,14 @@ namespace ACPOnline.DataAccess
             user.UpdatedDate = reader.GetNullableDateTime(8);
             user.UpdatedBy = reader.GetInt32(9);
             return user;
+        }
+
+        private AuthResult FillAuthResult(SqlDataReader reader)
+        {
+            var auth = new AuthResult();
+            auth.IsSuccess = reader.GetBoolean(0);
+            auth.IsWrongPassword = reader.GetBoolean(1);
+            return auth;
         }
     }
 }
