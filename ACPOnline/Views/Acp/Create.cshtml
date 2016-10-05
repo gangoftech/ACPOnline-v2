@@ -3,6 +3,9 @@
     ViewBag.Title = "Create";
 }
 @model ACPOnline.Models.AcpViewModel
+
+
+
 <div class="row">
     <!-- right column -->
     <div class="col-md-12">
@@ -20,7 +23,7 @@
                             <!-- text input -->
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Acp.ID)
-                                @Html.TextBoxFor(m => m.Acp.ID, new { @class = "form-control", disabled = true, placeholder = Html.DisplayNameFor(m => m.Acp.ID) })
+                                @Html.TextBoxFor(m => m.Acp.ID, new { @class = "form-control", @readonly= true, placeholder = Html.DisplayNameFor(m => m.Acp.ID), value="-1"})
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Acp.TypeID)
@@ -100,9 +103,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Artifacts</label>
+                            @Html.LabelFor(m => m.Acp.Artifacts)
+                            <a href="javascript:void(0)" id="addArtifacts" data-toggle="modal" style="margin-left:10px;">Click to Add/See</a>
                             </div>
                         </div>
+                        <div style="display:none;" id="artifactBinder">
+
+                        </div>
+                        
                         <div class="col-md-6">
 
                             <div class="form-group">
@@ -128,6 +136,7 @@
 </div>
 <!-- /.row -->
 
+<div id="bindArtifacts"></div>
 
 @section scripts
 {
@@ -136,5 +145,54 @@
             $('.datepicker').datepicker();
             $(".select2").select2();
         });
+
+        $(document).on("click", "#addArtifacts", function () {
+            $.ajax({
+            type: 'POST',
+            url: "LoadArtifacts",
+            success: function (data) {
+                $("#bindArtifacts").html(data);
+                $(".newlyAdded").remove();
+                $("#addArtifactsModal").modal("show");
+            },
+            failure: function () {
+                alert("Error loading artifacts");
+            },
+            async: true
+        });
+           
+        });
+
+        $(document).on("click", "#addMoreArtifacts", function () {
+            var ele = $("#addArtifactsContainer").clone();
+            var artifacts = $(ele).find('.artifactVal');
+            $.each($(artifacts), function (i, value) {
+                $(value).find('input').first().val('');
+                $(value).find('input').last().val('');
+            });
+            $(ele).addClass('newlyAdded');
+            $("#addGroup").before($(ele));
+        });
+
+        $(document).on("click", "#addArtifactsBtn", function () {
+            $("#hdnArtifactsVal").val('');
+            var arrayArtifacts = [];
+            var artifacts = $('.artifactVal');
+            var html = "";
+            var i = 0;
+            $.each($(artifacts), function (ind, value) {
+                var name = $(value).find('input').first().val().trim();
+                var url = $(value).find('input').last().val().trim();
+                if (name != "" && url != "" || name != "" || url != "") {
+                    html += '<input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="Acp_Artifacts_' + i + '__ID" name="Acp.Artifacts[' + i + '].ID" type="hidden" value="-1"><input id="Acp_Artifacts_' + i + '__Name" name="Acp.Artifacts[' + i + '].Name" type="hidden" value="'+ name +'"><input data-val="true" data-val-number="The field ACPID must be a number." id="Acp_Artifacts_' + i + '__ACPID" name="Acp.Artifacts[' + i + '].ACPID" type="hidden" value="-1"><input id="Acp_Artifacts_' + i + '__URL" name="Acp.Artifacts[' + i + '].URL" type="hidden" value="'+ url +'"><input id="Acp_Artifacts_' + i + '__IsDeleted" name="Acp.Artifacts[' + i + '].IsDeleted" type="hidden" value="False">';
+                    i++;
+                }
+                
+            });
+            $("#artifactBinder").append(html);
+            $("#addArtifactsModal").modal("hide");
+        });
+        
+
 </script>
 }

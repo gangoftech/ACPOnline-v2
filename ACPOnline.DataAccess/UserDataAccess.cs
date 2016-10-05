@@ -25,6 +25,19 @@ namespace ACPOnline.DataAccess
 
         }
 
+        public List<Roles> GetAllUserRolesInfo()
+        {
+            SqlCommand cmd = new SqlCommand("spd_Get_All_Roles_Info");
+            cmd.CommandType = CommandType.StoredProcedure;
+            return AcpDbContext.ExecuteReaderAndFillList(cmd,
+            reader =>
+            {
+                return FillRolesInfo(reader);
+
+            });
+
+        }
+
         public User GetUserInfo(int userId)
         {
             SqlCommand cmd = new SqlCommand("spd_Get_User_Info");
@@ -37,9 +50,27 @@ namespace ACPOnline.DataAccess
                 {
                     user = FillUserInfo(reader);
                 }
+                user.UserRoles = getUserRoles(userId);
                 return user;
             }
         }
+
+        public List<int> getUserRoles(int userId)
+        {
+            SqlCommand cmd = new SqlCommand("spd_Get_User_Role_Info");
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@User_Id", userId);
+            using (SqlDataReader reader = AcpDbContext.ExecuteReader(cmd))
+            {
+                var roleIds = new List<int>();
+                while (reader.Read())
+                {
+                     roleIds.Add(reader.GetInt32(0)== -1 ? 0 : reader.GetInt32(0));
+                }
+                return roleIds;
+            }
+        }
+
 
         public int UpdateUserInfo(User user)
         {
@@ -54,6 +85,15 @@ namespace ACPOnline.DataAccess
             cmd.Parameters.AddWithValue("@Created_By", user.CreatedBy);
             cmd.Parameters.AddWithValue("@Updated_By", user.UpdatedBy);
             return AcpDbContext.ExecuteNonQuery(cmd);
+        }
+
+        public void UpdateUserAccessInfo(int userId, int roleId)
+        {
+            SqlCommand cmd = new SqlCommand("spd_Acp_User_Role_Update");
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@User_Id", userId);
+            cmd.Parameters.AddWithValue("@Role_Id", roleId);
+            AcpDbContext.ExecuteNonQuery(cmd);
         }
 
         public AuthResult AuthendicateUser(string loginId, string password)
@@ -89,6 +129,15 @@ namespace ACPOnline.DataAccess
             user.UpdatedBy = reader.GetInt32(9);
             return user;
         }
+
+        private Roles FillRolesInfo(SqlDataReader reader)
+        {
+            var role = new Roles();
+            role.RoleId = reader.GetInt32(0);
+            role.RoleName = reader.GetString(1);
+            return role;
+        }
+        
 
         private AuthResult FillAuthResult(SqlDataReader reader)
         {

@@ -39,6 +39,7 @@ namespace ACPOnline.Controllers
             {
                 return View(model);
             }
+            model.Acp.ID = model.Acp.ID != null ? model.Acp.ID : -1;
             bus.UpdateAcpInfo(model);
             return View(model);
         }
@@ -66,6 +67,14 @@ namespace ACPOnline.Controllers
             var vm = bus.GetAllAcpInfo(acp);
             return View(vm);
         }
+
+        public ActionResult LoadArtifacts()
+        {
+            return PartialView("_Artifacts");
+        }
+
+        
+       
 
         private List<KeyValue> GetOptions()
         {

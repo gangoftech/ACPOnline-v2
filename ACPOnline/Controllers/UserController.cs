@@ -28,6 +28,7 @@ namespace ACPOnline.Controllers
         {
             var vm = new UserViewModel();
             vm.User = new User();
+            vm.UserAccess = bus.GetAllUserRolesInfo();
             vm.User.Password = Membership.GeneratePassword(8, 1);
             return View(vm);
         }
@@ -40,6 +41,7 @@ namespace ACPOnline.Controllers
                 return View(vm);
             }
             bus.UpdateUserInfo(vm.User);
+            vm.UserAccess = bus.GetAllUserRolesInfo();
             return View(vm);
         }
 
@@ -57,6 +59,7 @@ namespace ACPOnline.Controllers
         {
             var vm = new UserViewModel();
             vm.User = bus.GetUserInfo(id);
+            vm.UserAccess = bus.GetAllUserRolesInfo();
             return View(vm);
         }
     }

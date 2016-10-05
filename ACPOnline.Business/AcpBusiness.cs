@@ -61,9 +61,19 @@ namespace ACPOnline.Business
             return da.GetAcpInfo(acpID);
         }
 
+        public List<Artifacts> GetAcpArtifacts(int acpID)
+        {
+            return da.GetAcpArtifacts(acpID);
+        }
+
         public int UpdateAcpInfo(AcpViewModel acpVM)
         {
-            return da.UpdateAcpInfo(acpVM.Acp);
+           var s = da.UpdateAcpInfo(acpVM.Acp);
+           foreach (var item in acpVM.Acp.Artifacts)
+             {
+               da.UpdateAcpArtifactsInfo(acpVM.Acp.ID, item);
+             }
+           return s;
         }
     }
 }

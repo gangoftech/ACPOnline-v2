@@ -252,6 +252,21 @@ select * from [dbo].[vw_Acp_Info] where Acp_Id = @Acp_Id
 END
 GO
 
+DROP PROC [dbo].[spd_Get_Acp_Artifacts_Info]
+GO
+
+CREATE PROC [dbo].[spd_Get_Acp_Artifacts_Info]
+(
+ @Acp_Id INT
+)
+AS 
+BEGIN
+
+select * from [dbo].[Artifacts] where Acp_Id = @Acp_Id and Is_Deleted = 0
+
+END
+GO
+
 DROP PROC [dbo].[spd_Get_All_Acp_Info]
 GO
 
@@ -307,12 +322,118 @@ begin
 update dbo.ACP_INFO set 
 ACP_Type_ID = @ACP_Type_ID, ACP_Category_Id = @ACP_Category_Id, ACP_Name = @ACP_Name, Proposed_By = @Proposed_By, ACP_Lead = @ACP_Lead,
 Description = @Description, Lead_Assn_Date = @Lead_Assn_Date, Impl_Start_Date = @Impl_Start_Date, Impl_End_Date = @Impl_End_Date, 
-@Pl_Impl_End_Date = Pl_Impl_End_Date, @Launch_Date = Launch_Date, Pl_Launch_Date = @Pl_Launch_Date,
+Pl_Impl_End_Date = @Pl_Impl_End_Date, Launch_Date = @Launch_Date, Pl_Launch_Date = @Pl_Launch_Date,
 ACP_Status_Id = @ACP_Status_Id, Updated_By = @Updated_By, Updated_Date = GETDATE()
 where ACP_ID = @ACP_ID
 
 end
 
+
+END
+GO
+
+DROP PROC [dbo].[spd_Get_Acp_Artifact_Info_Update]
+GO
+
+CREATE PROC [dbo].[spd_Get_Acp_Artifact_Info_Update]
+(
+@ARTIFACT_ID int,
+@ARTIFACT_NAME varchar(20),
+@ACP_ID int = -1,
+@URL varchar(100)
+)
+AS 
+BEGIN
+
+if(@ACP_ID = -1)
+begin
+declare @AcpId int;
+declare @artifactId int;
+select @AcpId =  max(ACP_ID) from dbo.Acp_Info
+select @artifactId =  max(ARTIFACT_ID) from dbo.Artifacts
+insert into dbo.Artifacts(ARTIFACT_ID, ARTIFACT_NAME, ACP_ID, URL, Is_Deleted,
+Created_Date, Created_By, Updated_Date) values 
+(@artifactId, @ARTIFACT_NAME, @AcpId, @URL, 0,
+GEtDATE(), null, GETDATE())
+end
+
+else
+begin
+
+if not exists (select 1 from dbo.Artifacts where ARTIFACT_ID = @ARTIFACT_ID)
+begin
+declare @arti_Id int;
+select @arti_Id =  max(ARTIFACT_ID) from dbo.Artifacts
+insert into dbo.Artifacts(ARTIFACT_ID, ARTIFACT_NAME, ACP_ID, URL, Is_Deleted,
+Created_Date, Created_By, Updated_Date) values 
+(@arti_Id, @ARTIFACT_NAME, @ACP_ID, @URL, 0,
+GEtDATE(), null, GETDATE())
+end
+
+else
+begin
+update dbo.Artifacts set 
+ARTIFACT_NAME = @ARTIFACT_NAME, URL = @URL, Updated_Date = GETDATE()
+where ARTIFACT_ID = @ARTIFACT_ID
+end
+end
+
+END
+GO
+
+DROP PROC [dbo].[spd_Get_All_Roles_Info]
+GO
+
+CREATE PROC [dbo].[spd_Get_All_Roles_Info]
+AS 
+BEGIN
+
+select * from [dbo].[Roles]
+
+END
+GO
+
+DROP PROC [dbo].[spd_Acp_User_Role_Update]
+GO
+
+CREATE PROC [dbo].[spd_Acp_User_Role_Update]
+(
+@User_Id int,
+@Role_Id int
+)
+AS 
+BEGIN
+
+if(@User_Id = -1)
+begin
+declare @userId int;
+declare @accessId int;
+select @userId =  max(User_Id) from dbo.Acp_Users
+select @accessId =  max(Access_Id) + 1 from dbo.User_Access
+insert into dbo.User_Access(Access_Id,User_Id,Role_Id,Is_Deleted,
+Created_Date, Created_By, Updated_Date, Updated_By) values 
+(@accessId, @userId, @Role_Id, 0, GETDATE(), null, GETDATE(), null)
+end
+
+else
+begin
+
+
+if not exists (select 1 from dbo.User_Access where User_Id = @User_Id and Role_Id = @Role_Id)
+begin
+declare @access_Id int;
+select @access_Id =  max(Access_Id) + 1 from dbo.User_Access
+insert into dbo.User_Access(Access_Id,User_Id,Role_Id,Is_Deleted,
+Created_Date, Created_By, Updated_Date, Updated_By) values 
+(@access_Id, @User_Id, @Role_Id, 0, GETDATE(), null, GETDATE(), null)
+end
+
+else
+begin
+update dbo.User_Access set 
+Is_Deleted = 0, Updated_Date = GETDATE() where User_Id = @User_Id and Role_Id = @Role_Id
+end
+end
 
 END
 GO
@@ -349,8 +470,21 @@ CREATE PROC [dbo].[spd_Get_User_Info]
 AS 
 BEGIN
 
-select * from [dbo].[vw_User_Info] where [User_Id] = @User_Id
+select * from [dbo].[vw_User_Info] 
+END
+GO
 
+DROP PROC [dbo].[spd_Get_User_Role_Info]
+GO
+
+CREATE PROC [dbo].[spd_Get_User_Role_Info]
+(
+ @User_Id INT
+)
+AS 
+BEGIN
+
+select Role_Id from [dbo].[User_Access] where [User_Id] = @User_Id and [Is_Deleted] = 0
 END
 GO
 
@@ -395,7 +529,8 @@ GETDATE(), @Created_By)
 end
 else
 begin
-
+update dbo.User_Access set 
+Is_Deleted = 1 where User_Id = @User_Id 
 update dbo.Acp_Users set 
 [User_Name] = @User_Name, User_Email = @User_Email, User_Password = @User_Password, Is_Deleted = @Is_Deleted,
 Updated_By = @Updated_By, Updated_Date = GETDATE(),

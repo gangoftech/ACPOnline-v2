@@ -40,5 +40,8 @@ namespace ACPOnline.Models
 
         [Display(Name = "Updated By")]
         public int? UpdatedBy { get; set; }
+
+        [Display(Name = "User Access")]
+        public List<int> UserRoles { get; set; }
     }
 }

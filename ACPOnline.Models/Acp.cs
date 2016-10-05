@@ -99,5 +99,8 @@ namespace ACPOnline.Models
 
         [Display(Name = "Updated By")]
         public string UpdatedByName { get; set; }
+
+        [Display(Name = "Artifacts")]
+        public IList<Artifacts> Artifacts { get; set; }
     }
 }

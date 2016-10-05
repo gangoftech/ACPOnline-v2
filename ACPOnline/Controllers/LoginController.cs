@@ -39,7 +39,14 @@ namespace ACPOnline.Controllers
             if(auth.IsSuccess)
             {
                 FormsAuthentication.SetAuthCookie(vm.User.LoginId, false);
-                return Redirect(returnUrl);
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Create", "ACP");
+                }
             }
             else
             {

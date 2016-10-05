@@ -1,0 +1,81 @@
+﻿@model IList<ACPOnline.Models.Artifacts> 
+
+<div id="addArtifactsModal" class="modal fade edit-message-modal all-calendar-notification" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button type="button" class="close" title="Close" data-dismiss="modal">
+                    <span class="fa fa-times"></span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Artifacts</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Add the artifacts below</label>
+                </div>
+                <div class="form-group row" data-id="-1">
+                    <div class="col-sm-4">
+                        <label>Name</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <label>URL</label>
+                    </div>
+                </div>
+                <div id="addArtifactsContainer" style="display:none;">
+                    @for (int i = 0; i < 3; i++)
+                    {
+                    <div class="form-group row artifactVal" data-id="-1">
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" />
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control col-sm-8" />
+                        </div>
+                    </div>
+                    }
+                 </div>
+
+                    @if (Model != null || Model.Count() != 0)
+                    {
+                        foreach (var obj in Model)
+                        {
+                            <div class="form-group row artifactVal" data-id="@obj.ID" data-isDeleted="@obj.IsDeleted">
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" value="@obj.Name"/>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control col-sm-8" value="@obj.URL" />
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            <div class="form-group row artifactVal" data-id="-1">
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" />
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control col-sm-8" />
+                                </div>
+                            </div>
+                        }
+                    }
+               
+                <div class="form-group" id="addGroup">
+                    <a href="javascript:void(0);" id="addMoreArtifacts">Add More Artifacts</a>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-info pull-right" id="addArtifactsBtn">Add</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+

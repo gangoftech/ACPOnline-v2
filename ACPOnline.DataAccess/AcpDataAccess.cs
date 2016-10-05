@@ -23,6 +23,7 @@ namespace ACPOnline.DataAccess
                 {
                     acp = FillAcpInfo(reader);
                 }
+                acp.Artifacts = GetAcpArtifacts(acpID);
                 return acp;
             }
         }
@@ -65,6 +66,32 @@ namespace ACPOnline.DataAccess
             return AcpDbContext.ExecuteNonQuery(cmd);
         }
 
+        public void UpdateAcpArtifactsInfo(int? acpID, Artifacts artifactsInfo)
+        {
+            SqlCommand cmd = new SqlCommand("spd_Get_Acp_Artifact_Info_Update");
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@ARTIFACT_ID", artifactsInfo.ID);
+            cmd.Parameters.AddWithValue("@ARTIFACT_NAME", artifactsInfo.Name);
+            cmd.Parameters.AddWithValue("@ACP_ID", acpID);
+            cmd.Parameters.AddWithValue("@URL", artifactsInfo.URL);
+            AcpDbContext.ExecuteNonQuery(cmd);
+        }
+
+        public List<Artifacts> GetAcpArtifacts(int acpID)
+        {
+            SqlCommand cmd = new SqlCommand("spd_Get_Acp_Artifacts_Info");
+            cmd.Parameters.AddWithValue("@ACP_ID", acpID);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            return AcpDbContext.ExecuteReaderAndFillList(cmd,
+            reader =>
+            {
+                return FillAcpArtifactsInfo(reader);
+
+            });
+
+        }
+
         private Acp FillAcpInfo(SqlDataReader reader)
         {
 
@@ -98,6 +125,18 @@ namespace ACPOnline.DataAccess
                 acp.UpdatedByName = reader.GetString(25);
 
             return acp;
+        }
+
+        private Artifacts FillAcpArtifactsInfo(SqlDataReader reader)
+        {
+            var artifact = new Artifacts();
+            artifact.ID = reader.GetInt32(0);
+            artifact.Name = reader.GetString(1);
+            artifact.ACPID = reader.GetInt32(2);
+            artifact.URL = reader.GetString(3);
+            artifact.IsDeleted = reader.GetBoolean(4);
+            artifact.UpdatedDate = reader.GetDateTime(7);
+            return artifact;
         }
     }
 }

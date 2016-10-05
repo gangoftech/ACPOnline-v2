@@ -9,7 +9,9 @@ namespace ACPOnline.Models
     public class UserViewModel
     {
         public User User { get; set; }
-
+        
         public IList<User> UserList { get; set; }
+
+        public IList<Roles> UserAccess { get; set; }
     }
 }
